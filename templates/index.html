@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DeepCodeBG – интелигентен coding асистент, захранван от Mistral AI">
+    <title>DeepCodeBG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="app">
+        <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <button class="btn-new" onclick="newChat()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Нов разговор
+                </button>
+            </div>
+            <div class="sidebar-chats" id="sidebar-chats">
+                <div class="sidebar-label">Скорошни</div>
+                <div class="sidebar-empty">Все още няма разговори.</div>
+            </div>
+            <div class="sidebar-footer">DeepCodeBG · Mistral AI</div>
+        </aside>
+
+        <div class="main">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="btn-menu" onclick="toggleSidebar()">☰</button>
+                    <span class="topbar-title" id="topbar-title">DeepCodeBG</span>
+                </div>
+                <div class="topbar-right">
+                    <button class="toggle-btn" id="web-btn" onclick="toggleWeb()">🌐 Интернет</button>
+                    <button class="toggle-btn" id="reasoning-btn" onclick="toggleReasoning()">🧠 Reasoning</button>
+                    <button class="topbar-btn" onclick="deleteCurrentChat()" title="Изтрий чата">🗑️</button>
+                </div>
+            </div>
+
+            <div class="chat" id="chat">
+                <div class="welcome" id="welcome">
+                    <div class="welcome-logo">⚡</div>
+                    <h2>С какво мога да помогна?</h2>
+                    <p>Пиша код, дебъгвам грешки и обяснявам алгоритми на Python, JavaScript, C++, SQL и други езици.
+                    </p>
+                    <div class="chips">
+                        <button class="chip" onclick="ask(this)">🐍 Сортиране на масив в Python</button>
+                        <button class="chip" onclick="ask(this)">🔧 Дебъгване на segmentation fault</button>
+                        <button class="chip" onclick="ask(this)">📚 Обясни рекурсията с пример</button>
+                        <button class="chip" onclick="ask(this)">⚡ REST API с Flask</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-box">
+                    <textarea id="input" placeholder="Изпратете съобщение..." rows="1" onkeydown="onKey(event)"
+                        oninput="resize(this)"></textarea>
+                    <button class="btn-send" id="btn-send" onclick="send()">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-footer">DeepCodeBG може да прави грешки. Проверявайте важна информация.</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
