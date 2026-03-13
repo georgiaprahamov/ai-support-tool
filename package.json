@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "tinydb": "^0.1.0"
+  }
+}

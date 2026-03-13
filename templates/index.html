@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CodeX – intelligent coding assistant, powered by Mistral AI">
-    <title>CodeX</title>
+    <meta name="description" content="AI Support Tool – ИТ диагностичен асистент">
+    <title>AI Support Tool</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -29,21 +29,25 @@
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
-                    New chat
+                    Нов чат
                 </button>
             </div>
             <div class="sidebar-chats" id="sidebar-chats">
                 <div class="sidebar-label">Recent</div>
                 <div class="sidebar-empty">No chats yet.</div>
             </div>
-            <div class="sidebar-footer">CodeX · Mistral AI</div>
+            <div class="sidebar-footer">AI Support Tool</div>
         </aside>
 
         <div class="main">
             <div class="topbar">
-                <div class="topbar-left">
+                <div class="topbar-left widget-header">
                     <button class="btn-menu" onclick="toggleSidebar()">☰</button>
-                    <span class="topbar-title" id="topbar-title">CodeX</span>
+                    <div class="widget-logo">🛠️</div>
+                    <div class="widget-title-area">
+                        <span class="widget-title" id="topbar-title">AI Support Tool</span>
+                        <span class="widget-subtitle">ИТ диагностичен асистент</span>
+                    </div>
                 </div>
                 <div class="topbar-right">
                     <button class="topbar-btn" onclick="deleteCurrentChat()" title="Delete chat">🗑️</button>
@@ -52,22 +56,22 @@
 
             <div class="chat" id="chat">
                 <div class="welcome" id="welcome">
-                    <div class="welcome-logo">⚡</div>
-                    <h2>How can I help you?</h2>
-                    <p>I write code, debug errors, and explain algorithms in Python, JavaScript, C++, SQL and other languages.
+                    <div class="welcome-logo">🛠️</div>
+                    <h2>С какво мога да помогна?</h2>
+                    <p>Опиши ми твоя технически проблем или поставената грешка в терминала, за да я диагностицирам и предложа решение.
                     </p>
                     <div class="chips">
-                        <button class="chip" onclick="ask(this)">🐍 Sort an array in Python</button>
-                        <button class="chip" onclick="ask(this)">🔧 Debug a segmentation fault</button>
-                        <button class="chip" onclick="ask(this)">📚 Explain recursion with an example</button>
-                        <button class="chip" onclick="ask(this)">⚡ REST API with Flask</button>
+                        <button class="chip" onclick="ask(this)">🐞 Приложението крашва при старт</button>
+                        <button class="chip" onclick="ask(this)">🔧 Грешка: Port 5000 is already in use</button>
+                        <button class="chip" onclick="ask(this)">🌐 500 Internal Server Error</button>
+                        <button class="chip" onclick="ask(this)">💾 Не мога да се свържа с базата данни</button>
                     </div>
                 </div>
             </div>
 
             <div class="input-area">
                 <div class="input-box">
-                    <textarea id="input" placeholder="Send a message..." rows="1" onkeydown="onKey(event)"
+                    <textarea id="input" placeholder="Опишете проблема или поставете грешката..." rows="1" onkeydown="onKey(event)"
                         oninput="resize(this)"></textarea>
                     <button class="btn-send" id="btn-send" onclick="send()">
                         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -76,7 +80,7 @@
                         </svg>
                     </button>
                 </div>
-                <div class="input-footer">CodeX can make mistakes. Verify important information.</div>
+                <div class="input-footer">AI Support Tool може да допусне грешки. Уверете се, че командите са безопасни.</div>
             </div>
         </div>
     </div>

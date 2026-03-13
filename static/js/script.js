@@ -151,14 +151,14 @@ let currentChatId = null;
         function showWelcome() {
             chatEl.innerHTML = `
                 <div class="welcome" id="welcome">
-                    <div class="welcome-logo">⚡</div>
-                    <h2>How can I help you?</h2>
-                    <p>I write code, debug errors, and explain algorithms in Python, JavaScript, C++, SQL, and other languages.</p>
+                    <div class="welcome-logo">🛠️</div>
+                    <h2>С какво мога да помогна?</h2>
+                    <p>Опиши ми твоя технически проблем или поставената грешка в терминала, за да я диагностицирам и предложа решение.</p>
                     <div class="chips">
-                        <button class="chip" onclick="ask(this)">🐍 Sort an array in Python</button>
-                        <button class="chip" onclick="ask(this)">🔧 Debug segmentation fault</button>
-                        <button class="chip" onclick="ask(this)">📚 Explain recursion with an example</button>
-                        <button class="chip" onclick="ask(this)">⚡ REST API with Flask</button>
+                        <button class="chip" onclick="ask(this)">🐞 Приложението крашва при старт</button>
+                        <button class="chip" onclick="ask(this)">🔧 Грешка: Port 5000 is already in use</button>
+                        <button class="chip" onclick="ask(this)">🌐 500 Internal Server Error</button>
+                        <button class="chip" onclick="ask(this)">💾 Не мога да се свържа с базата данни</button>
                     </div>
                 </div>`;
         }
@@ -169,39 +169,23 @@ let currentChatId = null;
             const row = document.createElement('div');
             row.className = `msg-row ${role}` + (anim ? '' : ' no-anim');
 
-            const inner = document.createElement('div');
-            inner.className = 'msg-inner';
-
-            const header = document.createElement('div');
-            header.className = 'msg-header';
-            const icon = document.createElement('div');
-            icon.className = 'msg-icon';
-            icon.textContent = role === 'user' ? '👤' : '✦';
-            const name = document.createElement('div');
-            name.className = 'msg-name';
-            name.textContent = role === 'user' ? 'You' : 'CodeX';
-            header.appendChild(icon);
-            header.appendChild(name);
-            inner.appendChild(header);
-
             const textSrc = raw || content;
 
             if (role === 'bot') {
-                const body = document.createElement('div');
-                body.className = 'msg-content';
-                body.innerHTML = md(textSrc);
-                inner.appendChild(body);
-
-                // Render math after adding to DOM
-                row.appendChild(inner);
+                row.innerHTML = `
+                    <div class="msg-avatar"><div class="msg-icon">🛠️</div></div>
+                    <div class="msg-bubble bot">
+                        <div class="msg-name">Асистент</div>
+                        <div class="msg-content"></div>
+                    </div>`;
+                row.querySelector('.msg-content').innerHTML = md(textSrc);
                 chatEl.appendChild(row);
-                renderMath(body);
+                renderMath(row.querySelector('.msg-content'));
             } else {
-                const body = document.createElement('div');
-                body.className = 'msg-content';
-                body.innerHTML = esc(content).replace(/\n/g, '<br>');
-                inner.appendChild(body);
-                row.appendChild(inner);
+                row.innerHTML = `
+                    <div class="msg-bubble user">
+                        <div class="msg-content">${esc(content).replace(/\\n/g, '<br>')}</div>
+                    </div>`;
                 chatEl.appendChild(row);
             }
 
@@ -212,21 +196,26 @@ let currentChatId = null;
             hideWelcome();
             const row = document.createElement('div');
             row.className = 'msg-row bot';
-            row.innerHTML = `<div class="msg-inner">
-                <div class="msg-header"><div class="msg-icon" style="background:rgba(224,108,96,0.15)">⚠️</div><div class="msg-name">Error</div></div>
-                <div class="msg-content"><div class="msg-error">${esc(text)}</div></div>
-            </div>`;
+            row.innerHTML = `
+                <div class="msg-avatar"><div class="msg-icon" style="background:rgba(246,78,96,0.15); color: var(--red);">⚠️</div></div>
+                <div class="msg-bubble bot">
+                    <div class="msg-name" style="color: var(--red);">Грешка</div>
+                    <div class="msg-content"><div class="msg-error">${esc(text)}</div></div>
+                </div>`;
             chatEl.appendChild(row);
             scrollDown();
         }
 
         function showTyping() {
             const t = document.createElement('div');
-            t.className = 'typing-row'; t.id = 'typing';
-            t.innerHTML = `<div class="typing-inner">
-                <div class="typing-header"><div class="msg-icon" style="background:linear-gradient(135deg,var(--accent),#b06a3a);font-size:12px">✦</div><div class="msg-name">CodeX</div></div>
-                <div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
-            </div>`;
+            t.className = 'msg-row bot typing-row'; 
+            t.id = 'typing';
+            t.innerHTML = `
+                <div class="msg-avatar"><div class="msg-icon">🛠️</div></div>
+                <div class="msg-bubble bot">
+                    <div class="msg-name">Асистент</div>
+                    <div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+                </div>`;
             chatEl.appendChild(t);
             scrollDown();
         }
@@ -262,11 +251,11 @@ let currentChatId = null;
                     addMsg(data.reply, 'bot', { raw: data.reply });
                     loadList();
                 } else {
-                    addError(data.error || 'An error occurred.');
+                    addError(data.error || 'Възникна грешка.');
                 }
             } catch (e) {
                 hideTyping();
-                addError('No connection to the server.');
+                addError('Няма връзка със сървъра.');
             }
 
             isWaiting = false;
@@ -276,7 +265,7 @@ let currentChatId = null;
 
         async function newChat() {
             currentChatId = null;
-            document.getElementById('topbar-title').textContent = 'CodeX';
+            document.getElementById('topbar-title').textContent = 'AI Support Tool';
             showWelcome();
             document.querySelectorAll('.chat-link.active').forEach(e => e.classList.remove('active'));
             document.getElementById('sidebar').classList.remove('open');
@@ -326,10 +315,10 @@ let currentChatId = null;
                 const res = await fetch('/api/chats');
                 const chats = await res.json();
                 const el = document.getElementById('sidebar-chats');
-                const label = '<div class="sidebar-label">Recent</div>';
+                const label = '<div class="sidebar-label">История на чатовете</div>';
 
                 if (!chats.length) {
-                    el.innerHTML = label + '<div class="sidebar-empty">No chats yet.</div>';
+                    el.innerHTML = label + '<div class="sidebar-empty">Все още няма чатове.</div>';
                     return;
                 }
 

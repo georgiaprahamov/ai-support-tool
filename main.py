@@ -8,8 +8,27 @@ from utils import generate_title
 
 app = Flask(__name__)
 
-# Съхранява всички разговори
-chats = {}
+import json
+import os
+
+# Път към файла за съхранение
+DB_FILE = 'chats_db.json'
+
+def load_db():
+    if os.path.exists(DB_FILE):
+        try:
+            with open(DB_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except:
+            return {}
+    return {}
+
+def save_db(data):
+    with open(DB_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+# Зареждаме съществуващите чатове при старт
+chats = load_db()
 
 
 @app.route('/')
@@ -39,6 +58,7 @@ def create_chat():
         'created': datetime.now().isoformat(),
         'messages': []
     }
+    save_db(chats)
     return jsonify({'id': chat_id, 'title': chats[chat_id]['title']})
 
 
@@ -57,6 +77,7 @@ def get_chat(chat_id):
 def delete_chat(chat_id):
     if chat_id in chats:
         del chats[chat_id]
+        save_db(chats)
     return jsonify({'status': 'ok'})
 
 
@@ -89,6 +110,7 @@ def chat():
         'content': user_message,
         'time': datetime.now().strftime('%H:%M')
     })
+    save_db(chats)
 
     # Подготвяме API съобщенията
     headers = {
@@ -123,6 +145,8 @@ def chat():
             'fullContent': assistant_message,
             'time': datetime.now().strftime('%H:%M')
         })
+        
+        save_db(chats)
 
         return jsonify({
             'reply': assistant_message,

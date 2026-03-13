@@ -1,41 +1,41 @@
-# CodeX Chatbot
+# AI Support Tool
 
-CodeX is a web-based chatbot application built with Python and Flask. It uses Mistral AI for generating responses and is designed for educational purposes.
+AI Support Tool е уеб-базиран ИТ диагностичен асистент, изграден с Python и Flask. Той използва Mistral AI за анализиране на технически грешки и предоставяне на стъпка-по-стъпка решения за хардуерни и софтуерни проблеми.
 
-## Features
-- **Minimalist design (Claude-like):** Convenient interface with a dark theme.
-- **Chat history:** Management of multiple sessions and history saving.
-- **Developer tools:** Proper code formatting, markdown support, lists, etc.
+## Характеристики
+- **ИТ Диагностика:** Професионален анализ на системни грешки и хардуерни проблеми.
+- **Модерен Widget Дизайн:** Интерфейс с чат балончета, оптимизиран за вграждане в корпоративни сайтове.
+- **Персистентност:** Пълна история на чатовете, съхранявана локално в JSON база данни.
+- **Bulgarian Language Support:** Всички анализи и решения се предоставят на български език.
 
-## Installation
+## Инсталация
 
-1. Clone the repository:
+1. Клонирайте хранилището:
    ```bash
-   git clone <URL>
-   cd Chat
+   git clone https://github.com/georgiaprahamov/ai-support-tool.git
+   cd ai-support-tool
    ```
 
-2. Create a virtual environment and activate it:
+2. Създайте виртуална среда и я активирайте:
    ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # For MacOS/Linux
-   # .venv\Scripts\activate   # For Windows
+   python3 -m venv .venv
+   source .venv/bin/activate  # За MacOS/Linux
    ```
 
-3. Install the dependencies:
+3. Инсталирайте зависимостите:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Configuration:
-   Copy `config.example.py` to `config.py` and insert your Mistral API key.
+4. Конфигурация:
+   Копирайте `config.example.py` в `config.py` и поставете вашия Mistral API ключ.
    ```bash
    cp config.example.py config.py
    ```
 
-5. Run the application:
+5. Стартирайте приложението:
    ```bash
-   python main.py
+   python3 main.py
    ```
 
-Open your browser at [http://localhost:5001](http://localhost:5001).
+Отворете браузъра на [http://localhost:5001](http://localhost:5001).
