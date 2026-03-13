@@ -3,8 +3,8 @@ import requests
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request
 
-from config import MISTRAL_API_KEY, MISTRAL_API_URL, TEXT_MODEL, SYSTEM_PROMPT, REASONING_PROMPT
-from utils import generate_title, fetch_internet_results
+from config import MISTRAL_API_KEY, MISTRAL_API_URL, TEXT_MODEL, SYSTEM_PROMPT
+from utils import generate_title
 
 app = Flask(__name__)
 
@@ -65,8 +65,6 @@ def chat():
     data = request.get_json()
     user_message = data.get('message', '').strip()
     chat_id = data.get('chatId', '')
-    reasoning = data.get('reasoning', False)
-    web_search = data.get('webSearch', False)
 
     if not user_message:
         return jsonify({'error': 'Please enter a message.'}), 400
@@ -92,9 +90,6 @@ def chat():
         'time': datetime.now().strftime('%H:%M')
     })
 
-    # Избираме системен промпт
-    system_prompt = REASONING_PROMPT if reasoning else SYSTEM_PROMPT
-
     # Подготвяме API съобщенията
     headers = {
         "Authorization": f"Bearer {MISTRAL_API_KEY}",
@@ -102,17 +97,11 @@ def chat():
     }
 
     # Изграждаме историята за API-то (последните 20 съобщения)
-    api_messages = [{"role": "system", "content": system_prompt}]
+    api_messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
     for i, msg in enumerate(chat_data['messages'][-20:]):
         if msg['role'] == 'user':
-            content = msg['content']
-            # Добавяме интернет контекст само към последното съобщение, ако е активирано
-            if web_search and i == len(chat_data['messages'][-20:]) - 1:
-                search_ctx = fetch_internet_results(user_message)
-                if search_ctx:
-                    content = search_ctx + content
-            api_messages.append({"role": "user", "content": content})
+            api_messages.append({"role": "user", "content": msg['content']})
         else:
             api_messages.append({"role": "assistant", "content": msg.get('fullContent', msg['content'])})
 

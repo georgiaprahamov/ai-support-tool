@@ -5,9 +5,7 @@ CodeX is a web-based chatbot application built with Python and Flask. It uses Mi
 ## Features
 - **Minimalist design (Claude-like):** Convenient interface with a dark theme.
 - **Chat history:** Management of multiple sessions and history saving.
-- **Web search:** Ability to enrich answers with up-to-date data.
 - **Developer tools:** Proper code formatting, markdown support, lists, etc.
-- **Reasoning mode:** Option for step-by-step reasoning before generating the final response.
 
 ## Installation
 

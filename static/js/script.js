@@ -1,7 +1,5 @@
 let currentChatId = null;
         let isWaiting = false;
-        let reasoningOn = false;
-        let webOn = false;
 
         const chatEl = document.getElementById('chat');
         const inputEl = document.getElementById('input');
@@ -10,16 +8,6 @@ let currentChatId = null;
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('show');
-        }
-
-        function toggleReasoning() {
-            reasoningOn = !reasoningOn;
-            document.getElementById('reasoning-btn').classList.toggle('active', reasoningOn);
-        }
-
-        function toggleWeb() {
-            webOn = !webOn;
-            document.getElementById('web-btn').classList.toggle('active', webOn);
         }
 
         function resize(el) {
@@ -155,16 +143,6 @@ let currentChatId = null;
             }
         }
 
-        // Reasoning parser
-        function parseThink(text) {
-            const re = /<think>([\s\S]*?)<\/think>/g;
-            const parts = [];
-            let m;
-            while ((m = re.exec(text)) !== null) parts.push(m[1].trim());
-            const answer = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
-            return { thinking: parts.join('\n\n'), answer };
-        }
-
         function hideWelcome() {
             const w = document.getElementById('welcome');
             if (w) w.style.display = 'none';
@@ -209,26 +187,9 @@ let currentChatId = null;
             const textSrc = raw || content;
 
             if (role === 'bot') {
-                const parsed = parseThink(textSrc);
-
-                if (parsed.thinking) {
-                    const rDiv = document.createElement('div');
-                    rDiv.className = 'reasoning';
-                    rDiv.style.marginLeft = '32px';
-                    rDiv.innerHTML = `
-                        <div class="reasoning-head" onclick="this.parentElement.classList.toggle('collapsed')">
-                            <span>🧠</span>
-                            <span class="reasoning-head-label">Reasoning</span>
-                            <span class="reasoning-arrow">▼</span>
-                        </div>
-                        <div class="reasoning-body">${md(parsed.thinking)}</div>
-                    `;
-                    inner.appendChild(rDiv);
-                }
-
                 const body = document.createElement('div');
                 body.className = 'msg-content';
-                body.innerHTML = md(parsed.answer || content);
+                body.innerHTML = md(textSrc);
                 inner.appendChild(body);
 
                 // Render math after adding to DOM
@@ -290,7 +251,7 @@ let currentChatId = null;
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text, chatId: currentChatId, reasoning: reasoningOn, webSearch: webOn })
+                    body: JSON.stringify({ message: text, chatId: currentChatId })
                 });
                 hideTyping();
                 const data = await res.json();
