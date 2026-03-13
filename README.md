@@ -1,6 +1,6 @@
 # CodeX Chatbot
 
-CodeX (formerly known as DeepCodeBG) is a web-based chatbot application built with Python and Flask. It uses Mistral AI for generating responses and is designed for educational purposes.
+CodeX is a web-based chatbot application built with Python and Flask. It uses Mistral AI for generating responses and is designed for educational purposes.
 
 ## Features
 - **Minimalist design (Claude-like):** Convenient interface with a dark theme.
