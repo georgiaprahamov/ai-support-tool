@@ -35,7 +35,7 @@ def list_chats():
 def create_chat():
     chat_id = str(uuid.uuid4())[:8]
     chats[chat_id] = {
-        'title': 'Нов разговор',
+        'title': 'New chat',
         'created': datetime.now().isoformat(),
         'messages': []
     }
@@ -45,7 +45,7 @@ def create_chat():
 @app.route('/api/chats/<chat_id>', methods=['GET'])
 def get_chat(chat_id):
     if chat_id not in chats:
-        return jsonify({'error': 'Чатът не е намерен.'}), 404
+        return jsonify({'error': 'Chat not found.'}), 404
     return jsonify({
         'id': chat_id,
         'title': chats[chat_id]['title'],
@@ -69,7 +69,7 @@ def chat():
     web_search = data.get('webSearch', False)
 
     if not user_message:
-        return jsonify({'error': 'Моля, въведете съобщение.'}), 400
+        return jsonify({'error': 'Please enter a message.'}), 400
 
     # Създаваме нов чат ако няма
     if not chat_id or chat_id not in chats:
@@ -142,11 +142,11 @@ def chat():
         })
 
     except requests.exceptions.Timeout:
-        return jsonify({'error': 'Заявката отне твърде много време. Опитайте отново.'}), 504
+        return jsonify({'error': 'Request took too long. Please try again.'}), 504
     except requests.exceptions.RequestException as e:
-        return jsonify({'error': f'Грешка при свързване с Mistral AI: {str(e)}'}), 500
+        return jsonify({'error': f'Error connecting to Mistral AI: {str(e)}'}), 500
     except (KeyError, IndexError):
-        return jsonify({'error': 'Неочакван отговор от Mistral AI.'}), 500
+        return jsonify({'error': 'Unexpected response from Mistral AI.'}), 500
 
 
 if __name__ == '__main__':

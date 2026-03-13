@@ -54,7 +54,7 @@ let currentChatId = null;
                 const idx = codeBlocks.length;
                 const langLabel = lang || 'code';
                 codeBlocks.push(
-                    `<pre><div class="code-header"><span>${esc(langLabel)}</span><button class="btn-copy" onclick="copyCode(this)">Копирай</button></div><code>${esc(code.trimEnd())}</code></pre>`
+                    `<pre><div class="code-header"><span>${esc(langLabel)}</span><button class="btn-copy" onclick="copyCode(this)">Copy</button></div><code>${esc(code.trimEnd())}</code></pre>`
                 );
                 return `%%CODEBLOCK_${idx}%%`;
             });
@@ -134,8 +134,8 @@ let currentChatId = null;
         function copyCode(btn) {
             const code = btn.closest('pre').querySelector('code').textContent;
             navigator.clipboard.writeText(code).then(() => {
-                btn.textContent = '✓ Копирано';
-                setTimeout(() => btn.textContent = 'Копирай', 2000);
+                btn.textContent = '✓ Copied';
+                setTimeout(() => btn.textContent = 'Copy', 2000);
             });
         }
 
@@ -174,13 +174,13 @@ let currentChatId = null;
             chatEl.innerHTML = `
                 <div class="welcome" id="welcome">
                     <div class="welcome-logo">⚡</div>
-                    <h2>С какво мога да помогна?</h2>
-                    <p>Пиша код, дебъгвам грешки и обяснявам алгоритми на Python, JavaScript, C++, SQL и други езици.</p>
+                    <h2>How can I help you?</h2>
+                    <p>I write code, debug errors, and explain algorithms in Python, JavaScript, C++, SQL, and other languages.</p>
                     <div class="chips">
-                        <button class="chip" onclick="ask(this)">🐍 Сортиране на масив в Python</button>
-                        <button class="chip" onclick="ask(this)">🔧 Дебъгване на segmentation fault</button>
-                        <button class="chip" onclick="ask(this)">📚 Обясни рекурсията с пример</button>
-                        <button class="chip" onclick="ask(this)">⚡ REST API с Flask</button>
+                        <button class="chip" onclick="ask(this)">🐍 Sort an array in Python</button>
+                        <button class="chip" onclick="ask(this)">🔧 Debug segmentation fault</button>
+                        <button class="chip" onclick="ask(this)">📚 Explain recursion with an example</button>
+                        <button class="chip" onclick="ask(this)">⚡ REST API with Flask</button>
                     </div>
                 </div>`;
         }
@@ -201,7 +201,7 @@ let currentChatId = null;
             icon.textContent = role === 'user' ? '👤' : '✦';
             const name = document.createElement('div');
             name.className = 'msg-name';
-            name.textContent = role === 'user' ? 'Вие' : 'DeepCodeBG';
+            name.textContent = role === 'user' ? 'You' : 'CodeX';
             header.appendChild(icon);
             header.appendChild(name);
             inner.appendChild(header);
@@ -218,7 +218,7 @@ let currentChatId = null;
                     rDiv.innerHTML = `
                         <div class="reasoning-head" onclick="this.parentElement.classList.toggle('collapsed')">
                             <span>🧠</span>
-                            <span class="reasoning-head-label">Разсъждение</span>
+                            <span class="reasoning-head-label">Reasoning</span>
                             <span class="reasoning-arrow">▼</span>
                         </div>
                         <div class="reasoning-body">${md(parsed.thinking)}</div>
@@ -252,7 +252,7 @@ let currentChatId = null;
             const row = document.createElement('div');
             row.className = 'msg-row bot';
             row.innerHTML = `<div class="msg-inner">
-                <div class="msg-header"><div class="msg-icon" style="background:rgba(224,108,96,0.15)">⚠️</div><div class="msg-name">Грешка</div></div>
+                <div class="msg-header"><div class="msg-icon" style="background:rgba(224,108,96,0.15)">⚠️</div><div class="msg-name">Error</div></div>
                 <div class="msg-content"><div class="msg-error">${esc(text)}</div></div>
             </div>`;
             chatEl.appendChild(row);
@@ -263,7 +263,7 @@ let currentChatId = null;
             const t = document.createElement('div');
             t.className = 'typing-row'; t.id = 'typing';
             t.innerHTML = `<div class="typing-inner">
-                <div class="typing-header"><div class="msg-icon" style="background:linear-gradient(135deg,var(--accent),#b06a3a);font-size:12px">✦</div><div class="msg-name">DeepCodeBG</div></div>
+                <div class="typing-header"><div class="msg-icon" style="background:linear-gradient(135deg,var(--accent),#b06a3a);font-size:12px">✦</div><div class="msg-name">CodeX</div></div>
                 <div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
             </div>`;
             chatEl.appendChild(t);
@@ -301,11 +301,11 @@ let currentChatId = null;
                     addMsg(data.reply, 'bot', { raw: data.reply });
                     loadList();
                 } else {
-                    addError(data.error || 'Възникна грешка.');
+                    addError(data.error || 'An error occurred.');
                 }
             } catch (e) {
                 hideTyping();
-                addError('Няма връзка със сървъра.');
+                addError('No connection to the server.');
             }
 
             isWaiting = false;
@@ -315,7 +315,7 @@ let currentChatId = null;
 
         async function newChat() {
             currentChatId = null;
-            document.getElementById('topbar-title').textContent = 'DeepCodeBG';
+            document.getElementById('topbar-title').textContent = 'CodeX';
             showWelcome();
             document.querySelectorAll('.chat-link.active').forEach(e => e.classList.remove('active'));
             document.getElementById('sidebar').classList.remove('open');
@@ -365,10 +365,10 @@ let currentChatId = null;
                 const res = await fetch('/api/chats');
                 const chats = await res.json();
                 const el = document.getElementById('sidebar-chats');
-                const label = '<div class="sidebar-label">Скорошни</div>';
+                const label = '<div class="sidebar-label">Recent</div>';
 
                 if (!chats.length) {
-                    el.innerHTML = label + '<div class="sidebar-empty">Все още няма разговори.</div>';
+                    el.innerHTML = label + '<div class="sidebar-empty">No chats yet.</div>';
                     return;
                 }
 
@@ -377,7 +377,7 @@ let currentChatId = null;
                     const active = c.id === currentChatId ? ' active' : '';
                     html += `<div class="chat-link${active}" data-id="${c.id}" onclick="loadChat('${c.id}')">
                         <span class="chat-link-title">${esc(c.title)}</span>
-                        <button class="chat-link-del" onclick="delChat('${c.id}',event)" title="Изтрий">✕</button>
+                        <button class="chat-link-del" onclick="delChat('${c.id}',event)" title="Delete">✕</button>
                     </div>`;
                 });
                 el.innerHTML = html;

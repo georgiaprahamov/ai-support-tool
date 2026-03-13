@@ -1,43 +1,43 @@
 # CodeX Chatbot
 
-CodeX (известен преди като DeepCodeBG) е уеб базирано чатбот приложение, изградено с Python и Flask. Използва Mistral AI за генериране на отговори и е предназначено за образователни цели.
+CodeX (formerly known as DeepCodeBG) is a web-based chatbot application built with Python and Flask. It uses Mistral AI for generating responses and is designed for educational purposes.
 
-## Функционалности
-- **Минималистичен дизайн (подобен на Claude):** Удобен интерфейс с тъмна тема.
-- **История на разговорите:** Управление на множество сесии и запазване на историята.
-- **Търсене в интернет:** Възможност за обогатяване на отговорите с актуални данни.
-- **Инструменти за програмисти:** Правилно форматиране на код, markdown поддръжка, списъци и др.
-- **Режим на разсъждение (Reasoning):** Опция за стъпка-по-стъпка разсъждение преди генериране на крайния отговор.
+## Features
+- **Minimalist design (Claude-like):** Convenient interface with a dark theme.
+- **Chat history:** Management of multiple sessions and history saving.
+- **Web search:** Ability to enrich answers with up-to-date data.
+- **Developer tools:** Proper code formatting, markdown support, lists, etc.
+- **Reasoning mode:** Option for step-by-step reasoning before generating the final response.
 
-## Инсталация
+## Installation
 
-1. Клонирайте хранилището:
+1. Clone the repository:
    ```bash
    git clone <URL>
    cd Chat
    ```
 
-2. Създайте виртуална среда и активирайте:
+2. Create a virtual environment and activate it:
    ```bash
    python -m venv .venv
-   source .venv/bin/activate  # За MacOS/Linux
-   # .venv\Scripts\activate   # За Windows
+   source .venv/bin/activate  # For MacOS/Linux
+   # .venv\Scripts\activate   # For Windows
    ```
 
-3. Инсталирайте зависимостите:
+3. Install the dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Конфигурация:
-   Копирайте `config.example.py` като `config.py` и поставете вашия Mistral API ключ.
+4. Configuration:
+   Copy `config.example.py` to `config.py` and insert your Mistral API key.
    ```bash
    cp config.example.py config.py
    ```
 
-5. Стартирайте приложението:
+5. Run the application:
    ```bash
    python main.py
    ```
 
-Открийте браузъра си на [http://localhost:5001](http://localhost:5001).
+Open your browser at [http://localhost:5001](http://localhost:5001).
